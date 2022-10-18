@@ -12,36 +12,35 @@ db = SQLAlchemy(app)
 db.init_app(app)
 
 with app.app_context():
-    class Shows(db.Model):
+    class shows(db.Model):
         id = db.Column(db.Integer, primary_key=True)
-        name = db.Column(db.String(80), unique=True, nullable=False)
+        name = db.Column(db.String(80), nullable=False)
         seasons = db.Column(db.Integer, nullable=False)
 
-    GOT = Shows(
-        name = "Game of Thrones",
+    GOT = shows(
+        name = "Hoyse of the Dragon",
         seasons = 8,
     )
+    db.create_all()
     db.session.add(GOT)
     db.session.commit()
 
-    db.create_all()
 
 @app.route('/')
 def hello():
     return jsonify({'message': 'Hello from Flask!'}), 200
 
 
-@app.route('/shows', methods=["GET", "POST"])
+@app.route('/shows', methods=["GET"])
 def shows_handler():
     fns = {
         "GET":index,
-        "POST":shows.create
     }
     resp, code = fns[request.method](request)
     return jsonify(resp), code 
 
 def index(req):
-    return db.session.execute(db.select(Shows))
+    return db.session.execute(db.select(shows)).one()
     # return [show for show in tv_shows], 200
 
 
