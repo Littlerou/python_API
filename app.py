@@ -1,15 +1,20 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
+from werkzeug import exceptions
 from controllers import shows
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 CORS(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = './db/shows.db'
+db = SQLAlchemy(app)
+db.init_app(app)
 
 
 @app.route('/')
 def hello():
-    return f"Welcome to Flask!",200
+    return jsonify({'message': 'Hello from Flask!'}), 200
 
 
 @app.route('/shows', methods=["GET", "POST"])
@@ -40,6 +45,9 @@ def shows_handler_id(shows_id):
 def handle404(err):
     return jsonify({'message': f'oops{err}'}), 404
 
+@app.errorhandler(exceptions.BadRequest)
+def handle_400(err):
+    return {'message': f'Oops! {err}'}, 400
 
 @app.errorhandler(InternalServerError)
 def handle500(err):

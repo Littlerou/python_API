@@ -11,6 +11,6 @@ def api(monkeypatch):
     {'id': 4, 'name': 'Breaking Bad', 'seasons' : 5},
     {'id': 5, 'name': 'Mr Robot', 'seasons' : 4}
     ]
-    monkeypatch.setattr(shows, "shows", test_shows)
+    monkeypatch.setattr(shows, "tv_shows", test_shows)
     api = app.app.test_client()
     return api
