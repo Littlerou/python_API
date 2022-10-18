@@ -1,0 +1,6 @@
+Flask-Cors==3.0.10
+Flask-SQLAlchemy==3.0.2
+pytest-cov==4.0.0
+pytest-cov==4.0.0
+pytest-cov==4.0.0
+waitress==2.1.2
