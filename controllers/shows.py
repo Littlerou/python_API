@@ -9,7 +9,6 @@ tv_shows = [
 ]
 
 def index(req):
-    # db.session.execute(db.select('SELECT * FROM SHOWS'))
     return [show for show in tv_shows], 200
 
 def show(req, id):
@@ -36,7 +35,6 @@ def destroy(req, id):
 
 def find_by_id(id):
     try:
-        # db.session.execute(db.select('SELECT * FROM SHOWS'))
         return next(show for show in tv_shows if show['id'] == id)
     except:
         raise BadRequest(f"We don't have that show with id {id}!")
