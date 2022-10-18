@@ -7,10 +7,24 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = './db/shows.db'
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
 db = SQLAlchemy(app)
 db.init_app(app)
 
+with app.app_context():
+    class Shows(db.Model):
+        id = db.Column(db.Integer, primary_key=True)
+        name = db.Column(db.String(80), unique=True, nullable=False)
+        seasons = db.Column(db.Integer, nullable=False)
+
+    GOT = Shows(
+        name = "Game of Thrones",
+        seasons = 8,
+    )
+    db.session.add(GOT)
+    db.session.commit()
+
+    db.create_all()
 
 @app.route('/')
 def hello():
@@ -20,11 +34,15 @@ def hello():
 @app.route('/shows', methods=["GET", "POST"])
 def shows_handler():
     fns = {
-        "GET":shows.index,
+        "GET":index,
         "POST":shows.create
     }
     resp, code = fns[request.method](request)
     return jsonify(resp), code 
+
+def index(req):
+    return db.session.execute(db.select(Shows))
+    # return [show for show in tv_shows], 200
 
 
 @app.route('/shows/<int:shows_id>', methods=["GET", "PATCH", "PUT", "DELETE"])

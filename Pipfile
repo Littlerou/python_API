@@ -8,6 +8,7 @@ flask = "*"
 flask-cors = "*"
 flask-sqlalchemy = "*"
 waitress = "*"
+gunicorn = "*"
 
 [dev-packages]
 pytest = "*"
