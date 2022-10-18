@@ -8,6 +8,12 @@ flask = "*"
 flask-cors = "*"
 
 [dev-packages]
+pytest = "*"
+pytest-cov = "*"
 
 [requires]
 python_version = "3.10"
+
+[scripts]
+test = "pytest ."
+coverage = "pytest --cov-report term-missing --cov=."
