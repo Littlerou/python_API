@@ -5,11 +5,12 @@ from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 app = Flask(__name__)
 CORS(app)
 
-lizards = [
-    {'id': 1, 'name': 'Kommodo Dragon', 'colour': 'Grayish Green'},
-    {'id': 2, 'name': 'Iguana', 'colour': 'Yellow'},
-    {'id': 3, 'name': 'Chameleon', 'colour': 'Multi'},
-    {'id': 4, 'name': 'Plumed Basilisk', 'colour': 'Green'}
+shows = [
+    {'id': 1, 'name': 'Game Of Thrones', 'seasons': 8},
+    {'id': 2, 'name': 'House Of The Dragon', 'seasons' : 1},
+    {'id': 3, 'name': 'The Boys', 'seasons': 3},
+    {'id': 4, 'name': 'Breaking Bad', 'seasons' : 5},
+    {'id': 5, 'name': 'Mr Robot', 'seasons' : 4}
 ]
 
 
@@ -18,25 +19,25 @@ def hello():
     return f"Welcome to Flask!"
 
 
-@app.route('/lizards', methods=["GET", "POST"])
+@app.route('/shows', methods=["GET", "POST"])
 def index():
     if request.method == "GET":
-        return jsonify(lizards), 200
+        return jsonify(shows), 200
     elif request.method == "POST":
-        new_lizard = request.json
-        last_id = lizards[-1]['id']
-        new_lizard['id'] = last_id + 1
-        lizards.append(new_lizard)
-        return f"{new_lizard['name']} was created", 201
+        new_show = request.json
+        last_id = shows[-1]['id']
+        new_show['id'] = last_id + 1
+        shows.append(new_show)
+        return f"{new_show['name']} was created", 201
 
 
-@app.route('/lizards/<int:lizard_id>')
-def show(lizard_id):
+@app.route('/shows/<int:shows_id>')
+def show(shows_id):
     try:
-        return next(lizard for lizard in lizards if lizard['id'] == lizard_id)
+        return next(shows for shows in shows if shows['id'] == shows_id)
     except:
         raise BadRequest(
-            f"Sorry we do not have a lizard of that id: {lizard_id}")
+            f"Sorry we do not have a shows of that id: {shows_id}")
 
 
 @app.errorhandler(NotFound)
